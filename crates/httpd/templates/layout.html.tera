@@ -4,15 +4,115 @@
         <meta charset="UTF-8" />
         <title>{{ title }}</title>
         <style>
-            * {color-scheme: light dark}
+            * {
+                margin: 0;
+                padding: 0;
+                font-family: monospace;
+                color-scheme: light dark;
+                --container-max-width: 768px;
+                --color-success: #4bc432;
+                --color-warning: #f37b21;
+                --color-error: #ff6363;
+                --color-default: #999;
+                --background-color-hover-default: rgba(125, 125, 125, 0.1);
+            }
+
+            *::placeholder {
+                font-size: 12px;
+            }
+
+            hr {
+                background-color: var(--color-default);
+                border: none;
+                color: var(--color-default);
+                height: 1px;
+                margin: 8px 0;
+            }
+
+            h1 {
+                font-size: 14px;
+            }
+
+            h2 {
+                font-size: 14px;
+            }
+
+            h3 {
+                font-size: 13px;
+            }
+
+            a, a:active, a:visited {
+                color: var(--color-warning);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid var(--color-default);
+            }
+
+            table th,
+            table td {
+                border: 1px solid var(--color-default);
+                padding: 4px;
+            }
+
+            table tr:hover td {
+                background-color: var(--background-color-hover-default);
+            }
+
+            ul {
+                margin-left: 16px;
+            }
+
+            header {
+                display: block;
+                margin: 16px auto;
+                max-width: var(--container-max-width);
+                overflow: hidden;
+                position: relative;
+            }
+
+            main {
+                display: block;
+                margin: 16px auto;
+                max-width: var(--container-max-width);
+            }
+
+            footer {
+                display: block;
+                margin: 16px auto;
+                max-width: var(--container-max-width);
+                overflow: hidden;
+                position: relative;
+            }
         </style>
     </head>
     <body>
         <header>
-            <h1><a href="/">{{ title }}</a></h1>
+            <h1></h1>
+            <div class="float-left">
+
+            </div>
+            <div class="float-right">
+                <strong>
+                    <a href="/">{{ title }}</a>
+                </strong>
+            </div>
         </header>
         <main>
         {% block content %}{% endblock content %}
         </main>
+        <footer>
+            <small>
+                {% if masters %}
+                    <strong>Master:</strong>
+                    {% for master in masters %}
+                        {{ master }} &bull;
+                    {% endfor %}
+                {% endif %}
+                <a href="https://github.com/YGGverse/hlstate-rs" target="_blank" title="v{{ version }}">HLState</a>
+            </small>
+        </footer>
     </body>
 </html>
