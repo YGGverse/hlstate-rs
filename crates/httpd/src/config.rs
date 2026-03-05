@@ -1,12 +1,13 @@
 use serde::Deserialize;
-use std::net::IpAddr;
+use std::net::{IpAddr, SocketAddr};
 
 #[derive(Debug, Deserialize)]
 pub struct Config {
-    pub title: String,
+    pub debug: bool,
     pub description: Option<String>,
     pub format_time: String,
     pub host: IpAddr,
+    pub masters: Vec<SocketAddr>,
     pub port: u16,
-    pub debug: bool,
+    pub title: String,
 }

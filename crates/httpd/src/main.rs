@@ -23,8 +23,10 @@ fn index(meta: &State<Meta>, global: &State<Global>) -> Result<Template, Status>
     Ok(Template::render(
         "index",
         context! {
-            title: &meta.title,
+            masters: &global.masters,
             servers: servers,
+            title: &meta.title,
+            version: &meta.version,
         },
     ))
 }
@@ -48,6 +50,7 @@ fn rocket() -> _ {
         })
         .manage(Global {
             format_time: config.format_time,
+            masters: config.masters,
         })
         .manage(Meta {
             description: config.description,
