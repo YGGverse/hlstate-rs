@@ -1,5 +1,8 @@
 use serde::Deserialize;
-use std::net::{IpAddr, SocketAddr};
+use std::{
+    collections::HashSet,
+    net::{IpAddr, SocketAddr},
+};
 
 #[derive(Debug, Deserialize)]
 pub struct Config {
@@ -7,7 +10,7 @@ pub struct Config {
     pub description: Option<String>,
     pub format_time: String,
     pub host: IpAddr,
-    pub masters: Vec<SocketAddr>,
+    pub masters: HashSet<SocketAddr>,
     pub port: u16,
     pub title: String,
 }
