@@ -1,0 +1,17 @@
+[package]
+name = "hlstate-mysql"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+readme = "README.md"
+description = "Shared MySQL database library"
+keywords = ["hlstate", "database", "mysql", "library", "api"]
+# categories = []
+repository = "https://github.com/YGGverse/hlstate-rs"
+
+[features]
+default = []
+transaction = []
+
+[dependencies]
+mysql = "26.0.1"
