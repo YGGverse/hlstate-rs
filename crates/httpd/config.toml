@@ -1,7 +1,7 @@
 title = "HLState"
 
 # Bind server on given host
-host = "[::1]"
+host = "::1"
 
 # Bind server on given port
 port = 8027
