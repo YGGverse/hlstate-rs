@@ -9,7 +9,7 @@
                 padding: 0;
                 font-family: monospace;
                 color-scheme: light dark;
-                --container-max-width: 768px;
+                --container-max-width: 1024px;
                 --color-success: #4bc432;
                 --color-warning: #f37b21;
                 --color-error: #ff6363;
@@ -47,15 +47,16 @@
             }
 
             table {
-                width: 100%;
                 border-collapse: collapse;
                 border: 1px solid var(--color-default);
+                width: 100%;
             }
 
             table th,
             table td {
                 border: 1px solid var(--color-default);
                 padding: 4px;
+                text-align: center;
             }
 
             table tr:hover td {

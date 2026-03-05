@@ -5,30 +5,58 @@ mod argument;
 mod config;
 mod global;
 mod meta;
+mod scrape;
 
-use chrono::{DateTime, Utc};
 use global::Global;
 use meta::Meta;
-use rocket::{State, http::Status, serde::Serialize};
+use rocket::{State, http::Status};
 use rocket_dyn_templates::{Template, context};
 
 #[get("/")]
 fn index(meta: &State<Meta>, global: &State<Global>) -> Result<Template, Status> {
-    #[derive(Serialize)]
-    #[serde(crate = "rocket::serde")]
-    struct Server {
-        name: String,
+    // @TODO: requires library impl
+    // https://github.com/FWGS/xash3d-master/issues/4
+    let scrape = std::process::Command::new("xash3d-query")
+        .arg("all")
+        .arg("-M")
+        .arg(
+            global
+                .masters
+                .iter()
+                .map(|a| a.to_string())
+                .collect::<Vec<_>>()
+                .join(","),
+        )
+        .arg("-j")
+        .output()
+        .map_err(|e| {
+            error!("Make sure `xash3d-query` is installed: {e}");
+            Status::InternalServerError
+        })?;
+    if scrape.status.success() {
+        let result: scrape::Result = rocket::serde::json::serde_json::from_str(
+            str::from_utf8(&scrape.stdout).map_err(|e| {
+                error!("stdout parse error: {e}");
+                Status::InternalServerError
+            })?,
+        )
+        .map_err(|e| {
+            error!("JSON parse error: {e}");
+            Status::InternalServerError
+        })?;
+        Ok(Template::render(
+            "index",
+            context! {
+                masters: &global.masters,
+                title: &meta.title,
+                version: &meta.version,
+                servers: result.servers,
+            },
+        ))
+    } else {
+        error!("Make sure `xash3d-query` is installed!");
+        Err(Status::InternalServerError)
     }
-    let servers: Vec<Server> = Vec::new();
-    Ok(Template::render(
-        "index",
-        context! {
-            masters: &global.masters,
-            servers: servers,
-            title: &meta.title,
-            version: &meta.version,
-        },
-    ))
 }
 
 #[launch]
@@ -58,10 +86,4 @@ fn rocket() -> _ {
             version: env!("CARGO_PKG_VERSION").into(),
         })
         .mount("/", routes![index])
-}
-
-const S: &str = " • ";
-
-fn time(timestamp: i64) -> DateTime<Utc> {
-    DateTime::<Utc>::from_timestamp(timestamp, 0).unwrap()
 }

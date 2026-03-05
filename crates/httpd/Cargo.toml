@@ -10,10 +10,12 @@ categories = ["parsing", "text-processing", "value-formatting"]
 repository = "https://github.com/YGGverse/hlstate-rs"
 
 [dependencies]
-chrono = { version = "0.4.41", features = ["serde"] }
+#observer = { git = "https://github.com/YGGverse/xash3d-master.git", package = "xash3d-observer",  branch = "ip6-only" }
+#protocol = { git = "https://github.com/YGGverse/xash3d-master.git", package = "xash3d-protocol",  branch = "ip6-only" }
+#observer = { path = "../../../xash3d-master/observer", package = "xash3d-observer" }
+#protocol = { path = "../../../xash3d-master/protocol", package = "xash3d-protocol" }
 clap = { version = "4.5.54", features = ["derive"] }
 #mysql = { package = "hlstate-mysql", version = "0.1.0", path = "../mysql" }
-rocket = "0.5.1"
+rocket = { version = "0.5.1", features = ["json"] }
 rocket_dyn_templates = { version = "0.2.0", features = ["tera"] }
-serde = { version = "1.0.228", features = ["derive"] }
 toml = "0.9.10"
