@@ -1,2 +1,6 @@
 # hlstate-rs
-HLState implementation in Rust
+
+[HLState](https://github.com/YGGverse/HLState) implementation in Rust
+
+> [!NOTE]
+> In development!
