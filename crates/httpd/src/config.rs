@@ -2,6 +2,7 @@ use rocket::serde::Deserialize;
 use std::{
     collections::HashSet,
     net::{IpAddr, SocketAddr},
+    path::PathBuf,
 };
 
 #[derive(Debug, Deserialize)]
@@ -11,5 +12,6 @@ pub struct Config {
     pub host: IpAddr,
     pub masters: HashSet<SocketAddr>,
     pub port: u16,
+    pub query: PathBuf,
     pub title: String,
 }

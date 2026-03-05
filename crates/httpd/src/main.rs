@@ -16,7 +16,7 @@ use rocket_dyn_templates::{Template, context};
 fn index(meta: &State<Meta>, global: &State<Global>) -> Result<Template, Status> {
     // @TODO: requires library impl
     // https://github.com/FWGS/xash3d-master/issues/4
-    let scrape = std::process::Command::new("xash3d-query")
+    let scrape = std::process::Command::new(&global.query)
         .arg("all")
         .arg("-M")
         .arg(
@@ -78,6 +78,7 @@ fn rocket() -> _ {
         })
         .manage(Global {
             masters: config.masters,
+            query: config.query,
         })
         .manage(Meta {
             title: config.title,
