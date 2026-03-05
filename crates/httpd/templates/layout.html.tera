@@ -35,6 +35,7 @@
 
             h2 {
                 font-size: 14px;
+                margin-bottom: 8px;
             }
 
             h3 {
@@ -86,6 +87,14 @@
                 overflow: hidden;
                 position: relative;
             }
+
+            footer ul li.offline::marker {
+                color: var(--color-error)
+            }
+
+            footer ul li.online::marker {
+                color: var(--color-success)
+            }
         </style>
     </head>
     <body>
@@ -96,7 +105,10 @@
             </div>
             <div class="float-right">
                 <strong>
-                    <a href="/">{{ title }}</a>
+                    <a href="/">{{ title }}</a> |
+                    <a href="https://store.steampowered.com/app/70/HalfLife/" target="_blank" title="v{{ version }}">Game</a> |
+                    <a href="https://github.com/FWGS/xash3d-fwgs" target="_blank" title="v{{ version }}">Xash3D</a> |
+                    <a href="https://github.com/YGGverse/hlstate-rs" target="_blank" title="v{{ version }}">GitHub</a>
                 </strong>
             </div>
         </header>
@@ -104,15 +116,14 @@
         {% block content %}{% endblock content %}
         </main>
         <footer>
-            <small>
-                {% if masters %}
-                    <strong>Master:</strong>
+            <h2>Master</h2>
+            {% if masters %}
+                <ul>
                     {% for master in masters %}
-                        {{ master }} &bull;
+                        <li class="online">{{ master }}</li>
                     {% endfor %}
-                {% endif %}
-                <a href="https://github.com/YGGverse/hlstate-rs" target="_blank" title="v{{ version }}">HLState</a>
-            </small>
+                <ul>
+            {% endif %}
         </footer>
     </body>
 </html>
