@@ -1,0 +1,12 @@
+title = "HLState"
+
+format_time = "%d/%m/%Y %H:%M"
+
+# Bind server on given host
+host = "127.0.0.1"
+
+# Bind server on given port
+port = 8000
+
+#Configure instance in the debug mode
+debug = true

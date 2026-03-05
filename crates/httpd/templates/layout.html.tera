@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{{ title }}</title>
+        <style>
+            * {color-scheme: light dark}
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1><a href="/">{{ title }}</a></h1>
+        </header>
+        <main>
+        {% block content %}{% endblock content %}
+        </main>
+    </body>
+</html>

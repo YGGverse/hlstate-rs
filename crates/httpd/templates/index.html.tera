@@ -1,0 +1,14 @@
+{% extends "layout" %}
+{% block content %}
+    {% if servers %}
+        {% for server in servers %}
+            <div>
+                <h2><a href="{{ server.host }}">{{ server.name }}</a></h2>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div>
+            <p>Nobody.</p>
+        </div>
+    {% endif %}
+{% endblock content %}
