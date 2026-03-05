@@ -77,11 +77,9 @@ fn rocket() -> _ {
             }
         })
         .manage(Global {
-            format_time: config.format_time,
             masters: config.masters,
         })
         .manage(Meta {
-            description: config.description,
             title: config.title,
             version: env!("CARGO_PKG_VERSION").into(),
         })
