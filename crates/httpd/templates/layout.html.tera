@@ -107,8 +107,9 @@
             <div class="float-right">
                 <strong>
                     <a href="/">{{ title }}</a> |
-                    <a href="https://store.steampowered.com/app/70/HalfLife/" target="_blank" title="v{{ version }}">Game</a> |
-                    <a href="https://github.com/FWGS/xash3d-fwgs" target="_blank" title="v{{ version }}">Xash3D</a> |
+                    <a href="https://store.steampowered.com/app/70/HalfLife/" target="_blank">Game</a> |
+                    <a href="https://github.com/FWGS/xash3d-fwgs" target="_blank">Xash3D</a> |
+                    <a href="http://[222:a8e4:50cd:55c:788e:b0a5:4e2f:a92c]/yggdrasil:games:half_life_on_xash3d" target="_blank">Docs</a> |
                     <a href="https://github.com/YGGverse/hlstate-rs" target="_blank" title="v{{ version }}">GitHub</a>
                 </strong>
             </div>
@@ -121,7 +122,7 @@
             {% if masters %}
                 <ul>
                     {% for master in masters %}
-                        <li class="online">{{ master }}</li>
+                        <li{# class="online" #}>{{ master }}</li>
                     {% endfor %}
                 <ul>
             {% endif %}
