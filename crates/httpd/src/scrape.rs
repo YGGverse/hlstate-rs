@@ -12,7 +12,7 @@ pub struct Result {
     pub servers: Vec<Info>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(crate = "rocket::serde")]
 pub struct Info {
     pub time: i64,
