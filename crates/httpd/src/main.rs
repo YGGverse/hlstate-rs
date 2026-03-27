@@ -3,23 +3,31 @@ extern crate rocket;
 
 mod argument;
 mod config;
+mod feed;
 mod global;
 mod meta;
 mod scrape;
 
 use chrono::{DateTime, Utc};
+use feed::Feed;
 use global::Global;
 use meta::Meta;
 use rocket::{
     State,
+    form::FromForm,
     http::Status,
+    response::content::RawXml,
     tokio::{spawn, sync::RwLock, time::sleep},
 };
 use rocket_dyn_templates::{Template, context};
 use std::{collections::HashSet, net::SocketAddr, path::PathBuf, sync::Arc, time::Duration};
 
 struct Online {
-    scrape: scrape::Result,
+    /// Actual state container
+    current: scrape::Result,
+    /// Hold previous `current` state updated to compare and notify subscribers for online change
+    last: Option<scrape::Result>,
+    /// Snap time
     update: DateTime<Utc>,
 }
 type Snap = Arc<RwLock<Option<Online>>>;
@@ -37,10 +45,50 @@ async fn index(
             masters: &global.masters,
             title: &meta.title,
             version: &meta.version,
-            servers: snap.as_ref().map(|s|s.scrape.servers.clone()),
+            servers: snap.as_ref().map(|s|s.current.servers.clone()),
             updated: snap.as_ref().map(|s|s.update.to_rfc2822())
         },
     ))
+}
+
+#[derive(FromForm, Debug)]
+struct RssParams {
+    online: Option<u32>,
+    servers: Option<Vec<SocketAddr>>,
+}
+#[get("/rss?<params..>")]
+async fn rss(
+    params: RssParams,
+    meta: &State<Meta>,
+    online: &State<Snap>,
+) -> Result<RawXml<String>, Status> {
+    let mut f = Feed::new(
+        &meta.title,
+        None, // @TODO service description
+    );
+    if let Some(state) = online.read().await.as_ref() {
+        for current in &state.current.servers {
+            if state.last.as_ref().is_none_or(|l| {
+                l.servers
+                    .iter()
+                    .any(|last| current.address == last.address && current.numcl > last.numcl)
+            }) && params.online.is_none_or(|online| current.numcl >= online)
+                && params
+                    .servers
+                    .as_ref()
+                    .is_none_or(|servers| servers.iter().any(|address| address == &current.address))
+            {
+                f.push(
+                    &state.update,
+                    &current.address,
+                    &current.host,
+                    &current.map,
+                    current.numcl,
+                )
+            }
+        }
+    }
+    Ok(RawXml(f.commit()))
 }
 
 #[launch]
@@ -60,17 +108,18 @@ async fn rocket() -> _ {
                     Ok(s) => match str::from_utf8(&s.stdout) {
                         Ok(r) => {
                             if s.status.success() {
-                                *online.write().await =
-                                    match rocket::serde::json::serde_json::from_str(r) {
-                                        Ok(scrape) => Some(Online {
-                                            scrape,
-                                            update: Utc::now(),
-                                        }),
-                                        Err(e) => {
-                                            error!("Could not decode scrape response: `{e}`");
-                                            None
-                                        }
+                                let mut state = online.write().await;
+                                *state = match rocket::serde::json::serde_json::from_str(r) {
+                                    Ok(current) => Some(Online {
+                                        current,
+                                        last: state.as_ref().map(|last| last.current.clone()),
+                                        update: Utc::now(),
+                                    }),
+                                    Err(e) => {
+                                        error!("Could not decode scrape response: `{e}`");
+                                        None
                                     }
+                                }
                             } else {
                                 error!("Scrape request failed");
                             }
@@ -103,7 +152,7 @@ async fn rocket() -> _ {
             title: config.title,
             version: env!("CARGO_PKG_VERSION").into(),
         })
-        .mount("/", routes![index])
+        .mount("/", routes![index, rss])
 }
 
 /// Get servers online using `bin` from given `masters`

@@ -1,7 +1,7 @@
 use rocket::serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(crate = "rocket::serde")]
 pub struct Result {
     pub protocol: Vec<i32>,

@@ -94,6 +94,20 @@
                 max-width: var(--container-max-width);
             }
 
+            main > form > fieldset {
+                border: 0;
+                margin: 16px 0;
+            }
+
+            main > form > fieldset input {
+                padding: 0 4px;
+            }
+
+            main > form > fieldset input[type="number"] {
+                margin: 0 4px;
+                max-width: 36px;
+            }
+
             footer {
                 display: block;
                 margin: 16px auto;

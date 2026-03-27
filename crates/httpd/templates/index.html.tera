@@ -2,11 +2,11 @@
 {% block content %}
     <h2>Game</h2>
     {% if servers %}
-        <form name="subscribe" method="get" action="/">
+        <form name="rss" method="get" action="/rss">
             <table>
                 <thead>
                     <tr>
-                        {# @TODO subscribe<th></th>#}
+                        <th></th>
                         <th>Address</th>
                         <th>Host</th>
                         <th>Ping</th>
@@ -26,7 +26,7 @@
                 </tbody>
                 {% for server in servers %}
                     <tr>
-                        {# @TODO subscribe<td><input type="checkbox" name="server[]" value="{{ server.address }}" /></td>#}
+                        <td><input type="checkbox" name="server[]" value="{{ server.address }}" /></td>
                         <td>{{ server.address }}</td>
                         <td>{{ server.host }}</td>
                         <td>{{ server.ping }}</td>
@@ -45,9 +45,12 @@
                 {% endfor %}
                 </tbody>
             </table>
-            {# @TODO subscribe
-            <input type="number" name="online" value="1" />
-            <input type="submit" value="Subscribe" />#}
+            <fieldset>
+                <label>
+                    min. online: <input type="number" name="online" min="0" value="1" />
+                </label>
+                <input type="submit" value="RSS" />
+            </fieldset>
         </form>
     {% else %}
         <div>
