@@ -48,11 +48,9 @@ impl Feed {
             time.timestamp() // must be unique as the event
         ));
 
-        self.0.push_str("<description>");
-        self.0.push_str(&format!("connect: {a}\n"));
-        self.0.push_str(&format!("map: {map}\n"));
-        self.0.push_str(&format!("online: {online}\n"));
-        self.0.push_str("</description>");
+        self.0.push_str(&format!(
+            "<description>online: {online}\nmap: {map}\nconnect: {a}\n</description>"
+        ));
 
         self.0.push_str("<pubDate>");
         self.0.push_str(&time.to_rfc2822());
