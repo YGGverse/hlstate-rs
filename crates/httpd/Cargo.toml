@@ -1,10 +1,10 @@
 [package]
 name = "hlstate-httpd"
-version = "0.2.0"
+version = "0.1.0"
 edition = "2024"
 license = "MIT"
 readme = "README.md"
-description = "Web stats for Xash3D servers, based on Rocket engine"
+description = "Web scrapper for Xash3D/FWGS servers, based on Rocket engine"
 keywords = ["hlstate", "half-life", "xash3d", "http", "server"]
 categories = ["parsing", "text-processing", "value-formatting"]
 repository = "https://github.com/YGGverse/hlstate-rs"
