@@ -14,4 +14,5 @@ pub struct Config {
     pub port: u16,
     pub query: PathBuf,
     pub title: String,
+    pub refresh: u64,
 }

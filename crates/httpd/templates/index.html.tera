@@ -2,46 +2,56 @@
 {% block content %}
     <h2>Game</h2>
     {% if servers %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Address</th>
-                    <th>Host</th>
-                    <th>Ping</th>
-                    <th>Protocol</th>
-                    <th>Gamedir</th>
-                    <th>Map</th>
-                    <th>Team</th>
-                    <th>Coop</th>
-                    <th>Password</th>
-                    <th>Dedicated</th>
-                    <th>DM</th>
-                    <th>Max</th>
-                    <th>Online</th>
-                    <th>Status</th>
-                </tr>
-            <thead>
-            </tbody>
-            {% for server in servers %}
-                <tr>
-                    <td>{{ server.address }}</td>
-                    <td>{{ server.host }}</td>
-                    <td>{{ server.ping }}</td>
-                    <td>{{ server.protocol }}</td>
-                    <td>{{ server.gamedir }}</td>
-                    <td>{{ server.map }}</td>
-                    <td>{{ server.team }}</td>
-                    <td>{{ server.coop }}</td>
-                    <td>{{ server.password }}</td>
-                    <td>{{ server.dedicated }}</td>
-                    <td>{{ server.dm }}</td>
-                    <td>{{ server.maxcl }}</td>
-                    <td>{{ server.numcl }}</td>
-                    <td>{{ server.status }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <form name="rss" method="get" action="/rss">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Address</th>
+                        <th>Host</th>
+                        <th>Ping</th>
+                        <th>Protocol</th>
+                        <th>Gamedir</th>
+                        <th>Map</th>
+                        <th>Team</th>
+                        <th>Coop</th>
+                        <th>Password</th>
+                        <th>Dedicated</th>
+                        <th>DM</th>
+                        <th>Max</th>
+                        <th>Online</th>
+                        <th>Status</th>
+                    </tr>
+                <thead>
+                </tbody>
+                {% for server in servers %}
+                    <tr>
+                        <td><input type="checkbox" name="server[]" value="{{ server.address }}" /></td>
+                        <td>{{ server.address }}</td>
+                        <td>{{ server.host }}</td>
+                        <td>{{ server.ping }}</td>
+                        <td>{{ server.protocol }}</td>
+                        <td>{{ server.gamedir }}</td>
+                        <td>{{ server.map }}</td>
+                        <td>{{ server.team }}</td>
+                        <td>{{ server.coop }}</td>
+                        <td>{{ server.password }}</td>
+                        <td>{{ server.dedicated }}</td>
+                        <td>{{ server.dm }}</td>
+                        <td>{{ server.maxcl }}</td>
+                        <td>{{ server.numcl }}</td>
+                        <td>{{ server.status }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <fieldset>
+                <label>
+                    min. online: <input type="number" name="online" min="0" value="1" />
+                </label>
+                <input type="submit" value="RSS" />
+            </fieldset>
+        </form>
     {% else %}
         <div>
             <p>Nobody.</p>

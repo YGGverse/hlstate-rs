@@ -9,7 +9,7 @@
                 padding: 0;
                 font-family: monospace;
                 color-scheme: light dark;
-                --container-max-width: 1024px;
+                --container-max-width: 1128px;
                 --color-success: #4bc432;
                 --color-warning: #f37b21;
                 --color-error: #ff6363;
@@ -75,10 +75,37 @@
                 position: relative;
             }
 
+            header > div {
+                display: inline-block;
+            }
+
+            header > div:first-child {
+                float: left;
+            }
+
+            header > div:last-child {
+                float: right;
+                text-align: right;
+            }
+
             main {
                 display: block;
                 margin: 16px auto;
                 max-width: var(--container-max-width);
+            }
+
+            main > form > fieldset {
+                border: 0;
+                margin: 16px 0;
+            }
+
+            main > form > fieldset input {
+                padding: 0 4px;
+            }
+
+            main > form > fieldset input[type="number"] {
+                margin: 0 4px;
+                max-width: 36px;
             }
 
             footer {
@@ -101,10 +128,7 @@
     <body>
         <header>
             <h1></h1>
-            <div class="float-left">
-
-            </div>
-            <div class="float-right">
+            <div>
                 <strong>
                     <a href="/">{{ title }}</a> |
                     <a href="https://store.steampowered.com/app/70/HalfLife/" target="_blank">Game</a> |
@@ -113,18 +137,21 @@
                     <a href="https://github.com/YGGverse/hlstate-rs" target="_blank" title="v{{ version }}">GitHub</a>
                 </strong>
             </div>
+            <div>
+                {% if updated %}{{ updated }}{% endif %}
+            </div>
         </header>
         <main>
         {% block content %}{% endblock content %}
         </main>
         <footer>
-            <h2>Master</h2>
+            <h2>Masters</h2>
             {% if masters %}
                 <ul>
                     {% for master in masters %}
                         <li{# class="online" #}>{{ master }}</li>
                     {% endfor %}
-                <ul>
+                </ul>
             {% endif %}
         </footer>
     </body>
