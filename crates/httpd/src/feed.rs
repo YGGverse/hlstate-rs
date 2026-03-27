@@ -49,7 +49,7 @@ impl Feed {
         ));
 
         self.0.push_str(&format!(
-            "<description>online: {online}\nmap: {map}\nconnect: {a}\n</description>"
+            "<description>online: {online} / map: {map} / connect: {a}</description>"
         ));
 
         self.0.push_str("<pubDate>");
